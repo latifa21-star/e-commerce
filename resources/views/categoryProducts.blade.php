@@ -11,129 +11,101 @@
     <title>Document</title>
    
         <style>
-   
-.navbar {
-    background-color: #222;
-    color: white;
-    padding: 10px 20px;
-    display: flex;
-    justify-content: space-between; 
-    align-items: center;
-    position: fixed;
-    top: 0;
-    width: 100%;
-    z-index: 1000;
-}
-.fas.fa-search.search-icon{
-
-}
-
-.logo {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: white;
-    margin-right: 20px;
-}
-
-.search-container {
-    display: flex;
-    align-items: center;
-    background-color: #333;
-    padding: 5px;
-    border-radius: 5px;
-    width: 40%;
-    margin-left:60px;
-}
-
-.search-container input[type="text"] {
-    border: none;
-    background-color: #333;
-    color: white;
-    width: 100%;
-    padding: 5px;
-}
-
-.search-container input[type="text"]::placeholder {
-    color: #aaa;
-}
-
-.search-container .search-icon {
-    color: white;
-    margin-left:5px;
-   
-}
-.fas.fa-search.search-icon{
-    margin-left:50px;
-}
-
-.menu {
-    display: flex;
-    gap: 15px;
-    align-items: center;
-    margin-left: auto; 
-    margin-right: 50px; 
-}
-
-
-.menu .app-icon,
-.menu .user-icon {
-    color: white;
-    text-decoration: none;
-    padding: 0vh;
-}
-
-.menu .app-icon i,
-.menu .user-icon i {
-    margin-right: 5px;
-}
-
-    
-    
-    .card {
-        border: none;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        border-radius: 8px;
-        overflow: hidden;
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
+   body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background-color: #f5f5f5;
+        overflow-x: hidden;
     }
-
-    .card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    .navbar {
+        background-color: #222;
+        color: white;
+        padding: 2vh 2vw;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        max-width: 100vw;
     }
-
-    .card img {
+    .fas.fa-search.search-icon{
+        margin-left:810px;
+    }
+    .navbar-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
         width: 100%;
-        height: 180px;
-        object-fit: cover;
     }
-
-    .card-body {
-        padding: 15px;
-    }
-
-    .card-title {
-        font-size: 1.1rem;
+    .logo {
+        font-size: 3vh;
         font-weight: bold;
-        color: #333;
-        margin-bottom: 8px;
     }
-
-    .card-text {
-        font-size: 1rem;
-        color: #e67e22;
-        margin-bottom: 0.5rem;
+    .card img {
+        height: 50vh;
+        object-fit: cover;
+        max-width: 100%; 
     }
-
-    .text-muted {
-        font-size: 0.9rem;
+    .search-container {
+        flex-grow: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 2vw;
+        position: relative;
     }
-
-    .text-success {
-        font-size: 0.9rem;
-        margin-top: -5px;
+    .search-container input[type="text"] {
+        width: 80%;
+        padding: 1.5vh 2vw 1.5vh 4vw;
+        font-size: 2vh;
+        border: none;
+        border-radius: 4px;
+        background-color: #333;
+        color: white;
     }
-}
+    .search-container .search-icon {
+        position: absolute;
+        right: 7.4vw;
+        color: white;
+        font-size: 2vh;
+        pointer-events: none;
+    }
+    .menu {
+        display: flex;
+        gap: 1.5vw;
+        align-items: center;
+    }
+    .menu a {
+        color: white;
+        text-decoration: none;
+        font-size: 2vh;
+    }
+    .menu .app-icon, .menu .user-icon {
+        display: flex;
+        align-items: center;
+        gap: 0.5vw;
+    }
+    .menu .app-icon i, .menu .user-icon i, .menu .menu-icon i {
+        font-size: 2.5vh;
+    }
+    .category-container {
+        display: flex;
+        align-items: center;
+        max-width: 80vw;
+        padding: 2vh;
+        background-color: #555;
+        border-radius: 4px;
+        align-self: flex-start;
+    }
+    .menu-icon {
+        color: white;
+        font-size: 2vh;
+        margin-right: 1vw;
+    }
+    .dropdown-menu {
+        max-width: 90vw;
+    }
+    .row{
+        margin-top:20px;
+    }
     body {
     margin: 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -213,36 +185,15 @@
     justify-content: center;
     gap: 30px;
 }
+
 </style>
 
    
 </head>
 <body>
      
-     <header class="navbar">
-        
-        <div class="navbar-top" style="width : 100%; ">
-            
-            <div style="display:flex; width: 100%; justify-content:space-between;">
-                <div class="logo">Eureka Fashion</div>
-                <form class="search-container" action="{{ route('categorie.show', '') }}" method="GET" onsubmit="return searchCategory()">
-                    <input type="text" name="category_name" id="category-name-input" placeholder="Rechercher une catégorie..." required>
-                    <i class="fas fa-search search-icon"></i>
-                </form>
-                <div class="menu">
-                    <div class="app-icon">
-                        <i class="fas fa-download"></i> Télécharger l'application
-                    </div>
-                    <a href="{{ route('register') }}" class="user-icon">
-                        <i class="fas fa-user"></i> Inscription
-                    </a>
-                </div>
-           
-            </div>
-            
+@include('navbar', ['showCategories' => false])
 
-        </div>
-        </header>
     
 <main>
 <div class="container my-4">
@@ -256,7 +207,7 @@
                             <h5 class="card-title">{{ $product->name }}</h5>
                             <p class="card-text">Prix : {{ $product->price }} MAD</p>
                                         <button class="add-to-cart">
-                                            <i class="fas fa-shopping-bag"></i> <!-- Utilise Font Awesome pour l'icône -->
+                                            <i class="fas fa-shopping-bag"></i> 
                                         </button>
                         </div>
                     </div>

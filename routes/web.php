@@ -29,26 +29,24 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
- Route::post('/categories', [CategoryController::class, 'store'])->name('categories.store');
+//  Route::post('/categories', [CategoryController::class, 'store'])->name('categories.store');
 
- Route::get('/categories/{id}', [categoryController::class, 'show'])->name('categories.show');
+//  Route::get('/categories/{id}', [categoryController::class, 'show'])->name('categories.show');
 
 
- Route::get('/categories/{id}', [JControllerCategories::class, 'show'])->name('categoryProducts');
+//  Route::get('/categorie/{id}', [JControllerCategories::class, 'show'])->name('categoryProducts');
 
 
 Route::resource('products', ProductController::class);
 
 Route::resource('categories', categoryController::class);
 
-
 Route::resource('categorie', JControllerCategories::class);
+
 
 
 
 Route::get('/categories/{id}/products', [CategoryController::class, 'showProducts'])->name('categories.products');
 Route::get('/navbar',function(){
     return view('navbar');
-}
-
-);
+});

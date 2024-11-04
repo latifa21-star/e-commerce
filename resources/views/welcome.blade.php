@@ -64,7 +64,7 @@
     }
     .search-container .search-icon {
         position: absolute;
-        left: 1.5vw;
+        right: 7.4vw;
         color: white;
         font-size: 2vh;
         pointer-events: none;
@@ -223,29 +223,6 @@
    
 </main>
 
-<script>
-    function searchCategory() {
-        const categoryName = document.getElementById('category-name-input').value;
-
-        
-        fetch(`{{ route('findCategoryId') }}?category_name=${categoryName}`)
-            .then(response => response.json())
-            .then(data => {
-                if (data.id) {
-
-                    window.location.href = `{{ url('categorie') }}/${data.id}`;
-                } else {
-                    alert('Catégorie non trouvée');
-                }
-            })
-            .catch(error => {
-                console.error('Erreur:', error);
-                alert('Une erreur est survenue');
-            });
-
-        return false; 
-    }
-</script>
 
 
 </body>

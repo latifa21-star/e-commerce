@@ -68,6 +68,17 @@ class JControllerCategories extends Controller
     return view('categoryProducts', compact('products', 'category'));
 }
 
+public function filtrerCategorie($id)
+{
+    
+    $category = Category::findOrFail($id);
+
+   
+    $products = Product::where('category_id', $category->id)->paginate(10);
+
+    
+    return view('categoryProducts', compact('products', 'category'));
+}
 
 public function findCategoryId(Request $request)
 {
