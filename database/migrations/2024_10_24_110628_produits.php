@@ -15,10 +15,8 @@ return new class extends Migration
             $table->text('sizes');  
             $table->string('image');
             $table->decimal('price', 8, 2);
+            $table->integer('stock');
             $table->text('description')->nullable();
-       
-            $table->unsignedBigInteger('user_id')->nullable();
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->unsignedBigInteger('category_id')->nullable();
             $table->foreign('category_id')->references('id')->on('categorys')->onDelete('cascade');
             $table->timestamps();

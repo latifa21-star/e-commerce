@@ -203,27 +203,25 @@
                 @if (isset($products[$category->id]))
                     @foreach ($products[$category->id] as $product)
                         <div class="col-md-4"> 
-                            <div class="card">
-                            <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}">
-                                <div class="card-body">
-                                    <h5 class="card-title">{{ $product->name }}</h5>
-                                    <p class="card-text">Prix : {{ $product->price }} MAD</p> 
-                                        <button class="add-to-cart">
-                                            <i class="fas fa-shopping-bag"></i> <!-- Utilise Font Awesome pour l'icône -->
-                                        </button>
-                                </div>
+                                    <div class="card">
+                <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" 
+                    style="cursor: pointer;" 
+                    data-bs-toggle="modal" 
+                    data-bs-target="#productDetailsModal{{ $product->id }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ $product->name }}</h5>
+                    <p class="card-text">Prix : {{ $product->price }} MAD</p>
+                    <button class="add-to-cart" data-bs-toggle="modal" data-bs-target="#addToCartModal">
+                        <i class="fas fa-shopping-bag"></i>
+                    </button>
+                </div>
+            </div>
+            @include('ProductDétailsModel', ['product' => $product])
                             </div>
                         </div>
                     @endforeach
-             
-                    
                 @endif
             </div>
         @endforeach
-   
-</main>
-
-
-
 </body>
 </html>

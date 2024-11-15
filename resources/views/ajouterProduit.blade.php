@@ -110,10 +110,26 @@
         .size-options label {
             margin-bottom: 0;
         }
+        .space{
+            display:flex;
+            justify-content:space-between;
+            
+        }
     </style>
 </head>
 <body>
 @include('_homeLink')
+
+    @if (session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+    @if (session('error'))
+        <div class="alert alert-error">
+            {{ session('error') }}
+        </div>
+    @endif
 <div class="container">
     <h1>Ajouter un produit</h1>
     <form method="POST" action="{{ route('products.store') }}" enctype="multipart/form-data">
@@ -127,13 +143,21 @@
         <div class="ts">
         <label for="price">Prix du produit :</label>
         <input type="number" name="price"><br>
-        <label>Category:</label><br>
-        <select name ="category_id">
-        @foreach($categories as $categorie)
-        <option value="{{ $categorie->id }}">{{ $categorie->name }}</option>
-        @endforeach
-        </select>
-
+        
+        <div class="space">
+        <div style="margin-top:1rem;">
+        <label>Category:</label>
+            <select name ="category_id">
+            @foreach($categories as $categorie)
+            <option value="{{ $categorie->id }}">{{ $categorie->name }}</option>
+            @endforeach
+            </select>
+        </div>
+        <div style="margin-top:1rem;">
+            <label  for="stock">Quantité en stock :</label>
+            <input style="height:40px;width:150px;" type="number" name="stock" min="1" placeholder="Entrez la quantité ici">
+        </div> 
+        </div>
         
         </div>
 

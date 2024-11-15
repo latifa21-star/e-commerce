@@ -11,7 +11,7 @@ class Product extends Model
 
     protected $table = 'produits'; 
 
-    protected $fillable = ['name', 'genre', 'sizes', 'image', 'price', 'description', 'user_id', 'category_id'];
+    protected $fillable = ['name', 'genre', 'sizes', 'image', 'price', 'stock','description', 'user_id', 'category_id'];
 
     protected $casts = [
         'sizes' => 'array',  

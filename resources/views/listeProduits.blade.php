@@ -52,7 +52,7 @@
 @endif
 
 <div class="product-list">
-    @foreach($products as $product)
+    @foreach($prds as $product)
         <div class="product">
             <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}">
             <h2>{{ $product->name }}</h2>

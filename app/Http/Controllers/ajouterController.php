@@ -5,19 +5,25 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Product; // Assurez-vous d'importer votre modèle de produit
 use Illuminate\Support\Facades\Storage;
-
+use App\Models\Category;
 class ajouterController extends Controller
 {
     public function index()
     {
        $prds = Product::all(); // Doit renvoyer une collection d'objets Product
-       dd($prds);
+       $categories = Category::all();
+    //    dd($prds);
        return view('listeProduits', ['prds' => $prds]);
     }
-public function create()
+    public function create()
     {
-        return view('ajouterProduit');
+        // Récupérer toutes les catégories depuis la base de données
+        $categories = Category::all();
+        
+        // Retourner la vue avec les catégories
+        return view('ajouterProduit', ['categories' => $categories]);
     }
+    
 
 
     // Méthode pour ajouter un produit
@@ -35,7 +41,8 @@ public function create()
             'description' => 'nullable|string',
         ]);
 
-        // Téléchargement de l'image
+        try{
+            // Téléchargement de l'image
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('images', 'public');
         }
@@ -50,10 +57,14 @@ public function create()
         $product->category = $validatedData['category'];
         $product->description = $validatedData['description'];
 
-        // Enregistrement dans la base de données
         $product->save();
 
-        // Redirection ou réponse après l'ajout
-        return view('listeProduits')->with('success', 'Produit ajouté avec succès !');
+        
+        return view('home')->with('success', 'Produit ajouté avec succès !');
+        
+        }catch (\Exception $e) {
+            
+            return view('home')->with('error', 'Une erreur est survenue lors de l\'ajout du produit. Veuillez réessayer.');
+        }
     }
 }

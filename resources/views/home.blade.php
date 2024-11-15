@@ -1,292 +1,356 @@
+@extends('layouts.admin')
+
+@section('content')
 <!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-  <title>Barre latérale et catégories circulaires</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <title>Catalogue de Produits</title>
   <style>
-    /* Style de la barre latérale */
-    .sidebar {
-      height: 100vh;
-      width: 0;
-      position: fixed;
-      top: 0;
-      left: 0;
-      background-color: white;
-      overflow-x: hidden;
-      transition: 0.5s;
-      padding-top: 60px;
-    }
-    .product-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 20px; /* Espace entre les produits */
-      justify-content: center;
+    
+    .product-catalog {
+      background-color: #f8fafc;
+      padding: 20px;
     }
 
-    .product {
-      border: 1px solid #ddd;
-      padding: 10px;
-      width: 180px; /* Ajuste la largeur selon tes besoins */
-      background-color: #ffffff;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      border-radius: 8px; /* Coins arrondis */
-      text-align: center;
-      transition: transform 0.2s;
-    }
-
-    .product:hover {
-      transform: scale(1.05); /* Zoom léger au survol */
-    }
-
-    .product img {
-      width: 100%;
-      height: 140px; /* Hauteur fixe pour les images */
-      object-fit: cover; /* Adapter les images à la taille */
-      margin-bottom: 10px;
-      border-radius: 5px; /* Coins arrondis pour les images */
-    }
-
-    .product h2 {
-      font-size: 14px;
-      margin: 10px 0;
-      color: #333;
-      height: 40px; /* Limiter la hauteur du texte pour les titres longs */
-      overflow: hidden; /* Masquer le texte débordant */
-      text-overflow: ellipsis; /* Ajouter des points de suspension pour le texte long */
-    }
-
-    .product-buttons {
+    .product-catalog__search-container {
       display: flex;
       justify-content: space-between;
-      margin-top: 10px;
-    }
-
-    .product-buttons button {
-      font-size: 12px;
-      padding: 5px 10px;
-      border: none;
-      background-color: #f0f0f0;
-      cursor: pointer;
-      border-radius: 4px;
-      transition: background-color 0.2s;
-    }
-
-    .product-buttons button:hover {
-      background-color: #ddd;
-    }
-
-    /* Symbole de la barre latérale */
-    .sidebar-symbol {
-      position: fixed;
-      top: 50%;
-      left: 0;
-      background-color: #333;
-      color: black;
-      padding: 10px;
-      cursor: pointer;
-      transition: 0.5s;
-      z-index: 1;
-    }
-
-    /* Lien dans la barre latérale */
-    .sidebar a {
-      padding: 16px 16px;
-      text-decoration: none;
-      font-size: 18px;
-      color: black;
-      display: block;
-      transition: 0.3s;
-    }
-
-    .sidebar a:hover {
-      background-color: #575757;
-    }
-
-    /* Afficher la barre latérale lorsqu'on passe le curseur */
-    .sidebar:hover {
-      width: 250px;
-    }
-
-    .sidebar-symbol:hover ~ .sidebar {
-      width: 250px;
-    }
-
-    /* Style du cercle et du symbole + */
-    .circle {
-      width: 100px;
-      height: 100px;
-      border-radius: 50%;
-      background-color: #ff9800;
-      display: flex;
       align-items: center;
-      justify-content: center;
-      color: white;
-      font-size: 36px;
-      text-align: center;
-      cursor: pointer;
+      margin-top: 12%;
+      width: 100%;
+      max-width: 800px;
+      margin: 2rem auto;
+    }
+
+    .product-catalog__search-input-wrapper {
       position: relative;
-      margin: 20px auto; /* Centrer le cercle */
-      display: none; /* Cacher le cercle par défaut */
+      flex-grow: 1;
+      margin-right: 1rem;
     }
 
-    .circle:hover {
-      background-color: #f57c00;
+    .product-catalog__search-input {
+      width: 100%;
+      padding: 1rem 1.5rem;
+      border-radius: 12px;
+      border: 2px solid #e2e8f0;
+      background-color: #ffffff;
+      font-size: 1rem;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      font-family: Georgia, serif;
     }
 
-    .logout {
+    .product-catalog__search-input:focus {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+      outline: none;
+    }
+
+    .product-catalog__search-icon {
       position: absolute;
-      margin-top: 10px;
-      right: 10px;
-      color: black;
-      cursor: pointer;
+      right: 1.5rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #94a3b8;
     }
 
-    /* Style du champ de recherche */
-    .search-container {
-      position: relative;
-      align-items:center;
-      display:flex;
-      justify-content:center;
+    .product-catalog__add-btn {
+      background-color: #2563eb;
+      color: #ffffff;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: background-color 0.3s;
+      margin-left: 3rem;
+      font-family: Georgia, serif;
+    }
+
+    .product-catalog__add-btn:hover {
+      background-color: #1e40af;
+    }
+
+    .product-catalog__grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 2rem;
+      padding: 2rem;
+      max-width: 1440px;
+      margin: 0 auto;
+    }
+
+    .product-catalog__card {
+      background-color: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      transition: transform 0.3s, box-shadow 0.3s;
+      width: 100%;
+      border: none;
+    }
+
+    .product-catalog__card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 20px -8px rgba(0, 0, 0, 0.15);
+    }
+
+    .product-catalog__image {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 12px 12px 0 0;
+    }
+
+    .product-catalog__content {
+      padding: 1.5rem;
+    }
+
+    .product-catalog__name {
+      font-size: 1.1rem;
+      font-weight: 100;
+      margin: 0.5rem 0;
+      color: #1e293b;
+      font-family: fantasy;
+      text-align: center;
+    }
+
+    .product-catalog__price {
+      font-size: 1.2rem;
+      font-weight: 100;
+      color: #2563eb;
+      margin: 0.5rem 0 1rem;
+      font-family: fantasy;
+      text-align: center;
+    }
+
+    .product-catalog__buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+      margin-top: 1rem;
+    }
+
+    .product-catalog__btn {
+      padding: 0.75rem 1.25rem;
+      border-radius: 8px;
+      font-weight: 500;
+      transition: all 0.3s;
+      text-transform: uppercase;
+      font-size: 0.875rem;
+      letter-spacing: 0.025em;
+      border: none;
+      cursor: pointer;
+      font-family: Georgia, serif;
+      text-decoration: none;
+      text-align: center;
+    }
+
+    .product-catalog__btn--success {
+      background-color: #22c55e;
+      color: #ffffff;
+      font-family: cursive;
       
     }
 
-    .search-container input {
+    .product-catalog__btn--success:hover {
+      background-color: #16a34a;
+    }
+
+    .product-catalog__btn--primary {
+      background-color: #2563eb;
+      color: #ffffff;
+      font-family: cursive;
+      
+    }
+
+    .product-catalog__btn--primary:hover {
+      background-color:darkblue;
+    }
+
+    .product-catalog__btn--danger {
+      background-color: #ef4444;
+      color: #ffffff;
       width: 50%;
-      padding: 10px 10px 10px 10px; /* Espace pour l'icône */
-      border-radius: 20px; /* Coins arrondis */
-      border: 1px solid #ddd; /* Bordure */
-      outline: none; /* Enlever le contour par défaut */
-      transition: border 0.3s; /* Transition pour la bordure */
+      margin-top: 1rem;
+      margin-left: 5rem;
+      font-family: cursive;
+      
     }
 
-    .search-container input:focus {
-      border: 1px solid #007bff; /* Bordure bleue au focus */
+    .product-catalog__btn--danger:hover {
+      background-color: #dc2626;
     }
 
-    .search-container .fa-search {
-      position: absolute;
-      left: 73%;
-      top: 50%;
-      transform: translateY(-50%); /* Centrer verticalement */
-      color: #aaa; /* Couleur de l'icône */
+    .product-catalog__modal {
+      display: none;
+      position: fixed;
+      z-index: 999;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.4);
     }
-    #test{
-      margin-top:6%;
+
+    .product-catalog__modal-content {
+      background-color: #fefefe;
+      margin: 15% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 30%;
+      border-radius: 12px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
     }
-    
+
+    /* Modal specifics */
+    .modal-header {
+      padding: 1rem;
+      border-bottom: 1px solid #e2e8f0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-title {
+      margin: 0;
+      font-family: Georgia, serif;
+      color: #1e293b;
+    }
+
+    .modal-body {
+      padding: 1.5rem;
+      font-family: Georgia, serif;
+    }
+
+    .modal-footer {
+      padding: 1rem;
+      border-top: 1px solid #e2e8f0;
+      display: flex;
+      justify-content: flex-end;
+      gap: 1rem;
+    }
+
+    .btn-close {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: #64748b;
+    }
+
+    /* Pagination styles */
+    .pagination {
+      margin: 2rem 0;
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    /* Responsive design */
+    @media (max-width: 768px) {
+      .product-catalog__grid {
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        padding: 1rem;
+        gap: 1rem;
+      }
+
+      .product-catalog__search-container {
+        margin: 1rem;
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .product-catalog__add-btn {
+        margin-left: 0;
+        width: 100%;
+        text-align: center;
+      }
+
+      .product-catalog__modal-content {
+        width: 90%;
+        margin: 10% auto;
+      }
+    }
   </style>
 </head>
 <body>
-
-<form method='get'>
-  <div class="sidebar-symbol">></div>
-  <div class="sidebar">
-    <a href="{{ route('products.index') }}">Liste des produits</a>
-    <a href="{{ route('products.create') }}">Ajouter un produit</a>
-    <a href="{{ route('categories.index') }}">Catégories</a>
-   
-  </div>
-</form>
-
-<div class="nav-item dropdown">
-<a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-    <i class="fas fa-bars"></i> <!-- Icône trois barres -->
-</a>
-
-
-                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
-                                    </a>
-
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                        @csrf
-                                    </form>
-                                </div>
-                            </div>
-
-@if(session('success'))
-  <div style="color: green;">
-    {{ session('success') }}
-  </div>
-@endif
-
-<!-- Formulaire de recherche des produits -->
-<form method="GET" action="{{ route('products.index') }}" class="mb-4 search-container">
-  <i class="fas fa-search"></i>
-  <input type="text" id="searchInput" placeholder="Rechercher un produit..." value="{{ $search ?? '' }}" onkeyup="filterProducts()">
-  
-</form>
-
-<div class="product-list" id="productContainer">
-  @foreach($products as $product)
-    <div  style="width: 15%;"class="product">
-      <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}">
-      <h2 class="product-name">{{ $product->name }}</h2>
-      
-      <div class="product-buttons">
-  <a href="{{ route('products.show', $product->id) }}" class="btn btn-success" style="width: 45%; margin-right: 0px;">Détails</a>
-  <a href="{{ route('products.edit', $product->id) }}" class="btn btn-primary" style="width: 45%; margin-left: 8px;">Modifier</a>
-</div>
-<button type="button" class="btn btn-danger mt-2" data-bs-toggle="modal" data-bs-target="#deleteModal{{ $product->id }}" style="width: 100%;">Supprimer</button>
+  <div class="product-catalog">
+    <div class="product-catalog__search-container">
+      <div class="product-catalog__search-input-wrapper">
+        <input type="text" id="searchInput" class="product-catalog__search-input" placeholder="Rechercher un produit..." value="{{ $search ?? '' }}" onkeyup="filterProducts()">
+        <i class="fas fa-search product-catalog__search-icon"></i>
+      </div>
+      <a href="{{ route('products.create') }}" class="product-catalog__add-btn">Ajouter Produit</a>
     </div>
-    
-    <!-- Modal Bootstrap pour Confirmation de Suppression -->
-    <div class="modal fade" id="deleteModal{{ $product->id }}" tabindex="-1" aria-labelledby="deleteModalLabel{{ $product->id }}" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="deleteModalLabel{{ $product->id }}">Confirmer la Suppression</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <p>Es-tu sûr de vouloir supprimer le produit <strong>{{ $product->name }}</strong> ?</p>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-            <form action="{{ route('products.destroy', $product->id) }}" method="POST" style="display:inline;">
-              @csrf
-              @method('DELETE')
-              <button type="submit" class="btn btn-primary">Supprimer</button>
-            </form>
+
+    <div class="product-catalog__grid" id="productContainer">
+      @foreach($products as $product)
+        <div class="product-catalog__card">
+          <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" class="product-catalog__image">
+          <div class="product-catalog__content">
+            <h3 class="product-catalog__name">{{ $product->name }}</h3>
+            <p class="product-catalog__price">{{ $product->price }} MAD</p>
+            
+            <div class="product-catalog__buttons">
+              <a href="{{ route('products.show', $product->id) }}" class="product-catalog__btn product-catalog__btn--success">Détails</a>
+              <a href="{{ route('products.edit', $product->id) }}" class="product-catalog__btn product-catalog__btn--primary">Modifier</a>
+            </div>
+            <button type="button" class="product-catalog__btn product-catalog__btn--danger" onclick="showModal('deleteModal{{ $product->id }}')">Supprimer</button>
           </div>
         </div>
-      </div>
+        
+        <div class="product-catalog__modal" id="deleteModal{{ $product->id }}">
+          <div class="product-catalog__modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Confirmer la Suppression</h5>
+              <button type="button" class="btn-close" onclick="hideModal('deleteModal{{ $product->id }}')">×</button>
+            </div>
+            <div class="modal-body">
+              <p>tu-es sûr de vouloir supprimer le produit <strong>{{ $product->name }}</strong> ?</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="product-catalog__btn" onclick="hideModal('deleteModal{{ $product->id }}')">Annuler</button>
+              <form action="{{ route('products.destroy', $product->id) }}" method="POST" style="display:inline;">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="product-catalog__btn product-catalog__btn--danger">Supprimer</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      @endforeach
     </div>
-  @endforeach
-</div>
 
-<script>
- 
+    <div class="pagination">
+      {{ $products->links() }}
+    </div>
+  </div>
 
-  function filterProducts() {
-    var input, filter, container, products, name, i, txtValue;
-    input = document.getElementById('searchInput');
-    filter = input.value.toUpperCase();
-    container = document.getElementById("productContainer");
-    products = container.getElementsByClassName('product');
+  <script>
+    function filterProducts() {
+      var input = document.getElementById('searchInput');
+      var filter = input.value.toUpperCase();
+      var container = document.getElementById("productContainer");
+      var products = container.getElementsByClassName('product-catalog__card');
 
-    for (i = 0; i < products.length; i++) {
-      name = products[i].getElementsByClassName("product-name")[0];
-      txtValue = name.textContent || name.innerText;
-      if (txtValue.toUpperCase().indexOf(filter) > -1) {
-        products[i].style.display = "";
-      } else {
-        products[i].style.display = "none";
+      for (var i = 0; i < products.length; i++) {
+        var name = products[i].getElementsByClassName("product-catalog__name")[0];
+        var txtValue = name.textContent || name.innerText;
+        products[i].style.display = txtValue.toUpperCase().indexOf(filter) > -1 ? "" : "none";
       }
     }
-  }
-</script>
-<div id="test" class="d-flex justify-content-center">
-    {{ $products->links() }}
-</div>
 
+    function showModal(id) {
+      document.getElementById(id).style.display = "block";
+    }
 
+    function hideModal(id) {
+      document.getElementById(id).style.display = "none";
+    }
+  </script>
 </body>
 </html>
+@endsection

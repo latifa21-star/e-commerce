@@ -2,7 +2,7 @@
 <header class="navbar">
         <!-- Top navigation section -->
         <div class="navbar-top">
-            <!-- Logo -->
+        <img src="{{ Storage::url('LOGO/LOGO.svg') }}" alt="Logo" height="40" class="mb-2">
             <div class="logo">Eureka Fashion</div>
 
             <!-- Search Bar with Icon -->
@@ -15,7 +15,7 @@
 
 
            
-            <div class="menu">
+            <!-- <div class="menu">
                 <div class="app-icon">
                     <i class="fas fa-download"></i> Télécharger l'application
                 </div>
@@ -26,7 +26,7 @@
                 <i class="fas fa-cart-plus"></i> Ajouter au Panier
             </a>
 
-            </div>
+            </div> -->
         </div>
 
         <!-- Categories Dropdown with Icon -->

@@ -6,181 +6,164 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Modifier le Produit</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+        .app-container {
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 110vh;
-            margin: 0;
-        }
-
-        .container {
+            height: 100vh;
             background-color: #fff;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top:10%;
+            margin-bottom:15%;
+           
+        }
+
+        .form-container {
+            background-color: #fff;
+            padding: 30px;
             border-radius: 8px;
-            width: 400px;
-        }
-
-        h1 {
-            text-align: center;
-            color: #333;
-            margin-bottom: 20px;
-        }
-
-        form {
-            display: flex;
-            flex-direction: column;
-        }
-
-        label {
-            margin-bottom: 5px;
-            color: #555;
-            font-weight: bold;
-        }
-
-        input[type="text"],
-        input[type="number"],
-        input[type="file"],
-        select,
-        textarea {
-            margin-bottom: 15px;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 14px;
-        }
-
-        input[type="radio"],
-        input[type="checkbox"] {
-            margin-right: 5px;
-        }
-
-        textarea {
-            resize: vertical;
-        }
-
-        button[type="submit"] {
-            background-color: blue;
-            color: white;
-            border: none;
-            padding: 10px;
-            border-radius: 5px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        button[type="submit"]:hover {
-            background-color: blue;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 100%;
         }
 
         .form-group {
-            display: flex;
-            justify-content: space-between;
-            gap: 10px;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
 
-        .form-group input[type="number"],
-        .form-group select {
-            width: calc(50% - 5px);
+        .form-group label {
+            font-weight: bold;
+            margin-bottom: 5px;
         }
 
-        /* Styles pour les options de genre et tailles */
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
         .gender-options,
         .size-options {
             display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
         }
 
-        .gender-options div,
-        .size-options div {
+        .gender-options label,
+        .size-options label {
             display: flex;
             align-items: center;
             gap: 5px;
         }
 
-        /* Lien de retour */
-        a {
-            display: block;
-            text-align: center;
-            margin-top: 15px;
-            color: #007bff;
-            text-decoration: none;
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
         }
 
-        a:hover {
-            text-decoration: underline;
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #004d99;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            border-color: #6c757d;
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+            border-color: #545b62;
         }
     </style>
 </head>
 <body>
-@include('_homeLink')
-    <div class="container">
-        <h1>Modifier le Produit : {{ $product->name }}</h1>
+    @extends('layouts.admin')
 
-        <!-- Formulaire pour modifier le produit -->
-        <form method="POST" action="{{ route('products.update', $product->id) }}" enctype="multipart/form-data">
-            @csrf
-            @method('PUT')
+    @section('content')
+        <div class="app-container">
+            <div class="form-container">
+                <h1>Modifier le Produit : {{ $product->name }}</h1>
 
-            <label for="image">Modifier l'image :</label>
-    <input type="file" id="image" name="image" accept="image/*">
+                <!-- Formulaire pour modifier le produit -->
+                <form method="POST" action="{{ route('products.update', $product->id) }}" enctype="multipart/form-data">
+                    @csrf
+                    @method('PUT')
 
-    <label for="name">Nom du produit :</label>
-    <input type="text" id="name" name="name" value="{{ $product->name }}">
+                    <div class="form-group">
+                        <label for="image">Modifier l'image :</label>
+                        <input type="file" id="image" name="image" accept="image/*">
+                    </div>
 
-    <div class="form-group">
-        <label for="price">Prix du produit :</label>
-        <input type="number" id="price" name="price" value="{{ $product->price }}">
+                    <div class="form-group">
+                        <label for="name">Nom du produit :</label>
+                        <input type="text" id="name" name="name" value="{{ $product->name }}">
+                    </div>
 
-        <label for="category">Catégorie :</label>
-        <select name ="category_id">
-        @foreach($categories as $categorie)
-        <option value="{{ $categorie->id }}">{{ $categorie->name }}</option>
-        @endforeach
-        </select>
-    </div>
+                    <div class="form-group">
+                        <label for="price">Prix du produit :</label>
+                        <input type="number" id="price" name="price" value="{{ $product->price }}">
 
-    <label for="gender">Genre :</label>
-    <div class="gender-options">
-        <div>
-            <input type="radio" id="homme" name="gender" value="homme" {{ $product->gender == 'homme' ? 'checked' : '' }}>
-            <label for="homme">Homme</label>
-        </div>
-        <div>
-            <input type="radio" id="femme" name="gender" value="femme" {{ $product->gender == 'femme' ? 'checked' : '' }}>
-            <label for="femme">Femme</label>
-        </div>
-        <div>
-            <input type="radio" id="enfant" name="gender" value="enfant" {{ $product->gender == 'enfant' ? 'checked' : '' }}>
-            <label for="enfant">Enfant</label>
-        </div>
-    </div>
+                        <label for="category">Catégorie :</label>
+                        <select name="category_id">
+                            @foreach($categories as $categorie)
+                                <option value="{{ $categorie->id }}">{{ $categorie->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                        <div class="form-group">
+                            <label for="stock">Quantité en stock :</label>
+                            <input type="number" id="stock" name="stock" value="{{ $product->stock }}" min="0">
+                        </div>
 
-    <label>Taille :</label>
-    <div class="size-options">
-        @foreach(['XS', 'S', 'M', 'L', 'XL'] as $size)
-            <div>
-                <input type="checkbox" id="{{ strtolower($size) }}" name="sizes[]" value="{{ $size }}" {{ in_array($size, json_decode($product->sizes)) ? 'checked' : '' }}>
-                <label for="{{ strtolower($size) }}">{{ $size }}</label>
+                    <div class="form-group">
+                        <label for="gender">Genre :</label>
+                        <div class="gender-options">
+                            <div>
+                                <input type="radio" id="homme" name="gender" value="homme" {{ $product->gender == 'homme' ? 'checked' : '' }}>
+                                <label for="homme">Homme</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="femme" name="gender" value="femme" {{ $product->gender == 'femme' ? 'checked' : '' }}>
+                                <label for="femme">Femme</label>
+                            </div>
+                            <div>
+                                <input type="radio" id="enfant" name="gender" value="enfant" {{ $product->gender == 'enfant' ? 'checked' : '' }}>
+                                <label for="enfant">Enfant</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Taille :</label>
+                        <div class="size-options">
+                            @foreach(['XS', 'S', 'M', 'L', 'XL'] as $size)
+                                <div>
+                                    <input type="checkbox" id="{{ strtolower($size) }}" name="sizes[]" value="{{ $size }}" {{ in_array($size, json_decode($product->sizes)) ? 'checked' : '' }}>
+                                    <label for="{{ strtolower($size) }}">{{ $size }}</label>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description">Description :</label>
+                        <textarea id="description" name="description" rows="5">{{ $product->description }}</textarea>
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+                        <button type="submit" class="btn btn-primary">Modifier</button>
+                        <a href="{{ route('products.index') }}" class="btn btn-secondary">Retour à la liste des produits</a>
+                    </div>
+                </form>
             </div>
-        @endforeach
-    </div>
-
-    <label for="description">Description :</label>
-    <textarea id="description" name="description" rows="5">{{ $product->description }}</textarea>
-
-            <button type="submit">Modifier</button>
-        </form>
-
-        <a href="{{ route('products.index') }}">Retour à la liste des produits</a>
-    </div>
+        </div>
+    @endsection
 </body>
 </html>

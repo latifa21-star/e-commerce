@@ -15,7 +15,7 @@ class ProductController extends Controller
     public function index()
     {
         // Récupérer tous les produits
-        $products = Product::paginate(10);
+        $products = Product::paginate(12);
         
         // Retourner la vue avec les produits
         return view('home', compact('products'));
@@ -46,6 +46,7 @@ class ProductController extends Controller
             'sizes' => 'required|array',
             'sizes.*' => 'in:XS,S,M,L,XL',
             'category_id' => 'required',
+            'stock' => 'required|integer|min:1',
             'description' => 'nullable|string',
         ]);
 
@@ -62,6 +63,7 @@ class ProductController extends Controller
         $product->gender = $validatedData['gender'];
         $product->sizes = json_encode($validatedData['sizes']);
         $product->category_id = $validatedData['category_id'];
+        $product->stock = $validatedData['stock'];
         $product->description = $validatedData['description'];
 
         // Enregistrement dans la base de données

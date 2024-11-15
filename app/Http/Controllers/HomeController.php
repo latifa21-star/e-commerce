@@ -23,14 +23,14 @@ class HomeController extends Controller
      */
     public function index(Request $request)
 {
-    // Récupérer la requête de recherche
+    
     $search = $request->input('search');
 
-    // Rechercher les produits par nom si un mot clé est saisi
+    
     if ($search) {
-        $products = Product::where('name', 'like', '%' . $search . '%')->paginate(10);
+        $products = Product::where('name', 'like', '%' . $search . '%')->paginate(12);
     } else {
-        $products = Product::paginate(10);
+        $products = Product::paginate(12);
     }
 
     return view('home', compact('products', 'search'));

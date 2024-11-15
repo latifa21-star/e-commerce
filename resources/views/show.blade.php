@@ -7,16 +7,18 @@
     <style>
         /* Styles globaux */
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f2f5;
-            color: #333;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            padding: 20px;
-        }
+    font-family: Arial, sans-serif;
+    background-color: #f0f2f5;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+    padding-top: 80px; /* Ajouter du padding en haut pour laisser de l'espace sous la topbar */
+}
+
 
         /* Titre principal */
         .page-title {
@@ -73,10 +75,13 @@
         .back-link:hover {
             background-color: #74b9ff;
         }
+        
     </style>
 </head>
 <body>
+@extends('layouts.admin')
 
+@section('content')
     <!-- Titre de la page -->
     <h1 class="page-title">Détails du Produit : {{ $product->name }}</h1>
 
@@ -85,6 +90,7 @@
         <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}" style="max-width: 200px;">
         <p><strong>Nom :</strong> {{ $product->name }}</p>
         <p><strong>Prix :</strong> {{ $product->price }} MAD</p>
+        <p><strong>Stock :</strong> {{ $product->stock }}</p>
         <p><strong>Genre :</strong> {{ $product->gender }}</p>
         <p><strong>Tailles :</strong> 
     @foreach(json_decode($product->sizes) as $index => $size)
