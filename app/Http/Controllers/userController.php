@@ -10,37 +10,41 @@ class UserController extends Controller
 {
     public function index(Request $request)
     {
-        $query = User::with('role');
-
-        // Apply role filter if selected
-        if ($request->has('role') && $request->role !== '') {
-            $query->where('role_id', $request->role);
-        }
-
-        $users = $query->latest()->paginate(10);
+      
         $roles = Role::all();
-
-        return view('users', compact('users', 'roles'));
-    }
-
-    public function users()
-    {
-        $users = User::with('role')->latest()->paginate(10);
-        $roles = Role::all();
+    
         
+        $query = User::query();
+    
+        
+        if ($request->has('role_filter') && !empty($request->role_filter)) {
+            $query->where('role_id', $request->role_filter);
+        }
+    
+       
+        $users = $query->latest()->paginate(10);
+        
+        
+        $users->appends($request->query());
+    
         return view('users', compact('users', 'roles'));
     }
-
+    
     public function create()
     {
         $roles = Role::all();
         return view('user.create', compact('roles'));
     }
 
-    public function add()
+    public function updateRole(Request $request, $id)
     {
-        $roles = Role::all();
-        return view('user.create', compact('roles'));
+        $user = User::findOrFail($id);
+        $role = Role::findOrFail($request->role);
+        $user->role()->associate($role);
+        $user->save();
+
+        return redirect()->route('users.index')
+            ->with('success', 'Le rôle de l\'utilisateur a été mis à jour.');
     }
 
     public function store(Request $request)

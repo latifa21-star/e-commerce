@@ -60,13 +60,15 @@ Route::middleware(['auth','role:admin,super_admin'])->group(function () {
 // Routes exclusives au super_admin
 Route::middleware(['auth','role:super_admin'])->group(function () {
     // Gestion des utilisateurs
-    Route::get('/users', [UserController::class, 'users'])->name('users.index');
+    Route::get('/users', [UserController::class, 'index'])->name('users.index');
     // Ajout des routes CRUD pour la gestion des utilisateurs
     Route::get('/users/create', [UserController::class, 'add'])->name('users.create');
     Route::post('/users', [UserController::class, 'store'])->name('users.store');
     Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
     Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
     Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
+    Route::put('/users/{id}/update-role', [UserController::class, 'updateRole'])->name('users.updateRole');
+
 });
 Route::middleware(['auth', 'role:super_admin'])->group(function () {
     Route::resource('roles', RoleController::class);
